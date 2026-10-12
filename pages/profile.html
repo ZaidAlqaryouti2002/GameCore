@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameCore | My Account</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../style/layout.css">
+</head>
+<body data-page="profile">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- Loaded from components/topbar.html by layout.js -->
+  <div id="topbar-container"></div>
+
+  <main class="container page-content" id="main-content">
+    <div id="protected-content" hidden>
+      <h1>My Account</h1>
+      <p class="page-description">The profile page will be added after the login flow is ready.</p>
+    </div>
+  </main>
+
+  <!-- Remove this container on pages that should not have a footer. -->
+  <div id="footer-container"></div>
+
+  <noscript><p class="container">Enable JavaScript to load the shared header and footer.</p></noscript>
+
+  <!-- auth.js first, shared layout second, page-specific JavaScript last. -->
+  <script src="../js/auth.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/profile.js"></script>
+</body>
+</html>

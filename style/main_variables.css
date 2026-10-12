@@ -1,0 +1,12 @@
+:root {
+  --orange: #ff6b00;
+  --orange-dark: #e65f00;
+  --dark-gray: #242729;
+  --text: #252729;
+  --muted: #73777b;
+  --light-gray: #f6f7f8;
+  --border: #e4e6e8;
+  --white: #ffffff;
+  --container-width: 1360px;
+  --radius: 6px;
+}
