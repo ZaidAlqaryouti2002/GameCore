@@ -117,20 +117,25 @@ img {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 5px;
   flex-shrink: 0;
   font-weight: 800;
 }
 
 .brand-icon {
-  width: 29px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
   height: 26px;
-  color: var(--orange);
   font-size: 26px;
+  line-height: 1;
+  color: var(--orange);
 }
 
 .brand-text {
   font-size: 25px;
+  line-height: 1;
   letter-spacing: -0.8px;
 }
 

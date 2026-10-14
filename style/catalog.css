@@ -60,3 +60,24 @@ body[data-page="games"] .product-card img { height: 290px; }
 .game-platforms span { padding: 3px 6px; border-radius: 3px; background: var(--light-gray); color: var(--muted); font-size: 11px; }
 body[data-page="deals"] .product-discount { background: var(--orange); color: var(--white); font-weight: 700; }
 #category-options .filter-option { text-transform: capitalize; }
+.filter-option input[type="radio"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 1px solid var(--muted);
+  border-radius: 50%;
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.filter-option input[type="radio"]:checked {
+  border-color: var(--orange);
+  background-color: var(--orange);
+  box-shadow: inset 0 0 0 4px var(--white);
+}
+
+.filter-option input[type="radio"]:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+}
