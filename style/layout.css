@@ -13,7 +13,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-family: var(--font-main);
   color: var(--text);
   background-color: var(--light-gray);
   line-height: 1.5;
@@ -25,7 +25,9 @@ a {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
 }
 
@@ -602,4 +604,21 @@ a:focus-visible,
 select:focus-visible {
   outline: 3px solid var(--orange-action);
   outline-offset: 3px;
+}
+
+/* Shared typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-main);
+  font-weight: 700;
+}
+
+.hero-copy h1,
+.catalog-banner h1,
+.about-hero h1 {
+  font-weight: 800;
 }

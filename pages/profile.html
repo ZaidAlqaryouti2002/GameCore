@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GameCore | My Account</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style/layout.css">
   <link rel="stylesheet" href="../style/profile.css">
 </head>
@@ -16,7 +19,7 @@
 
   <main class="container page-content" id="main-content">
     <div id="protected-content" hidden>
-      <div class="profile-heading"><p class="profile-eyebrow">YOUR GAMECORE ACCOUNT</p><h1>My Profile</h1><p class="page-description">Your details, your next adventure.</p></div>
+      <div class="profile-heading"><p class="profile-eyebrow">YOUR GAMECORE ACCOUNT</p><h1>My Profile</h1><p class="page-description">Your account. Just the essentials.</p></div>
       <div class="profile-layout">
         <aside class="profile-card profile-overview">
           <div class="profile-avatar" id="profile-avatar" aria-hidden="true">GC</div>
@@ -31,7 +34,7 @@
           <button class="profile-logout" id="profile-logout" type="button"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sign out</button>
         </aside>
         <section class="profile-card profile-details" aria-labelledby="details-title">
-          <div class="profile-section-heading"><span class="profile-section-icon"><i class="bi bi-person" aria-hidden="true"></i></span><div><h2 id="details-title">Personal information</h2><p>Keep your account details up to date.</p></div></div>
+          <div class="profile-section-heading"><span class="profile-section-icon"><i class="bi bi-person" aria-hidden="true"></i></span><div><h2 id="details-title">Personal information</h2><p>New email? Different name? Update your details here.</p></div></div>
           <p id="profile-message" class="profile-message" role="status">Loading your account...</p>
           <button type="button" id="profile-retry" class="profile-secondary" hidden>Try again</button>
           <form id="profile-form">
@@ -40,7 +43,7 @@
               <input id="profile-name-input" name="name" type="text" autocomplete="name" minlength="2" maxlength="80" required>
               <label for="profile-email-input">Email address</label>
               <input id="profile-email-input" name="email" type="email" autocomplete="email" maxlength="254" required>
-              <p class="profile-field-hint">Use this email to sign in to GameCore.</p>
+              <p class="profile-field-hint">This is the email you'll use to sign in.</p>
               <div class="profile-form-actions"><button class="profile-save" type="submit">Save changes</button><button class="profile-secondary" id="profile-cancel" type="button">Cancel</button></div>
             </fieldset>
           </form>
