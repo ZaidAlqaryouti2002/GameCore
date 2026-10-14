@@ -42,18 +42,23 @@ async function loadProduct() {
     productDetails.hidden = false;
 
     const addButton = document.getElementById("product-add-button");
-    const cart = getStoredCart();
+    function updateButton() {
+      const isInCart = getStoredCart().some(function (item) {
+        return String(item.id) === productId;
+      });
 
-    const isInCart = cart.some(function (item) {
-      return String(item.id) === productId;
-    });
+      addButton.classList.toggle("remove-from-cart", isInCart);
 
-    if (isInCart) {
-      addButton.textContent = "In Cart";
-      addButton.disabled = true;
-    } else if (Number(product.stock) <= 0) {
-      addButton.textContent = "Out of Stock";
-      addButton.disabled = true;
+      if (isInCart) {
+        addButton.textContent = "Remove from Cart";
+        addButton.disabled = false;
+      } else if (Number(product.stock) <= 0) {
+        addButton.textContent = "Out of Stock";
+        addButton.disabled = true;
+      } else {
+        addButton.textContent = "Add to Cart";
+        addButton.disabled = false;
+      }
     }
 
     addButton.addEventListener("click", function () {
@@ -63,15 +68,22 @@ async function loadProduct() {
         return String(item.id) === productId;
       });
 
-      if (!alreadyAdded) {
+      if (alreadyAdded) {
+        const updatedCart = savedCart.filter(function (item) {
+          return String(item.id) !== productId;
+        });
+
+        localStorage.setItem("gamecore_cart", JSON.stringify(updatedCart));
+      } else if (Number(product.stock) > 0) {
         savedCart.push({ id: product.id, quantity: 1 });
         localStorage.setItem("gamecore_cart", JSON.stringify(savedCart));
-        updateCartCount();
       }
 
-      addButton.textContent = "In Cart";
-      addButton.disabled = true;
+      updateCartCount();
+      updateButton();
     });
+
+    updateButton();
   } catch (error) {
     productMessage.textContent = "Could not load the product. Please try again.";
     console.error(error);

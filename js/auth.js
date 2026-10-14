@@ -1,13 +1,14 @@
-// auth.js: session helpers only. Login/register forms and API calls come later.
-// Load this file before layout.js.
+// Local account and session helpers. Load before layout.js.
 const SESSION_KEY = "gamecore_user";
+const ACCOUNTS_KEY = "gamecore_accounts";
 const authScript = document.currentScript;
 const AUTH_PROJECT_URL = new URL("../", authScript.src);
 
-// Read the user saved for this browser tab.
+// Use the tab session, or a remembered account from this browser.
 function getCurrentUser() {
   try {
-    const user = JSON.parse(sessionStorage.getItem(SESSION_KEY));
+    const savedUser = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY);
+    const user = JSON.parse(savedUser);
 
     if (!user || (typeof user.id !== "string" && typeof user.id !== "number")) {
       return null;
@@ -37,9 +38,7 @@ function getUserId() {
   return user.id;
 }
 
-// Call this after a successful login response in a later stage.
-// Never save a password here.
-function startSession(user) {
+function startSession(user, rememberUser = false) {
   if (!user || (typeof user.id !== "string" && typeof user.id !== "number")) {
     return false;
   }
@@ -55,7 +54,13 @@ function startSession(user) {
   };
 
   try {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser));
+    if (rememberUser) {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser));
+      sessionStorage.removeItem(SESSION_KEY);
+    } else {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser));
+      localStorage.removeItem(SESSION_KEY);
+    }
     return true;
   } catch (error) {
     return false;
@@ -92,5 +97,63 @@ function requireAdmin() {
 
 function logout() {
   sessionStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(SESSION_KEY);
   window.location.replace(new URL("index.html", AUTH_PROJECT_URL).href);
+}
+
+function getLocalAccounts() {
+  const accounts = JSON.parse(localStorage.getItem(ACCOUNTS_KEY)) || [];
+  return Array.isArray(accounts) ? accounts : [];
+}
+
+// Browser-only prototype: keep a salted digest instead of a plain password.
+// A backend must replace this local account store for real authentication.
+async function hashPassword(password, salt) {
+  const data = new TextEncoder().encode(salt + ":" + password);
+  const result = await crypto.subtle.digest("SHA-256", data);
+
+  return Array.from(new Uint8Array(result)).map(function (byte) {
+    return byte.toString(16).padStart(2, "0");
+  }).join("");
+}
+
+async function registerLocalAccount(name, email, password) {
+  const normalizedEmail = email.trim().toLowerCase();
+  const salt = crypto.randomUUID();
+  const passwordHash = await hashPassword(password, salt);
+  const accounts = getLocalAccounts();
+
+  const existingAccount = accounts.find(function (account) {
+    return account.email === normalizedEmail;
+  });
+
+  if (existingAccount) {
+    throw new Error("An account with this email already exists. Please sign in.");
+  }
+
+  const account = {
+    id: crypto.randomUUID(),
+    name: name.trim(),
+    email: normalizedEmail,
+    salt: salt,
+    passwordHash: passwordHash,
+    role: "customer"
+  };
+
+  accounts.push(account);
+  localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
+  return account;
+}
+
+async function signInLocalAccount(email, password) {
+  const normalizedEmail = email.trim().toLowerCase();
+  const account = getLocalAccounts().find(function (savedAccount) {
+    return savedAccount.email === normalizedEmail;
+  });
+
+  if (!account || await hashPassword(password, account.salt) !== account.passwordHash) {
+    throw new Error("The email or password is incorrect.");
+  }
+
+  return account;
 }

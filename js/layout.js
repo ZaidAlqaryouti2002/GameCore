@@ -222,6 +222,24 @@ function loadLayout() {
   // Each component is optional and loads independently.
   loadTopbar();
   loadFooter();
+  loadAuthBanner();
+}
+
+async function loadAuthBanner() {
+  const container = document.getElementById("auth-banner-container");
+
+  if (!container) {
+    return;
+  }
+
+  try {
+    const url = new URL("components/auth-banner.html", PROJECT_URL);
+    container.innerHTML = await fetchComponent(url);
+    setComponentLinks(container);
+  } catch (error) {
+    container.textContent = "GameCore";
+    console.error(error);
+  }
 }
 
 if (document.readyState === "loading") {
