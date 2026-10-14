@@ -1,0 +1,39 @@
+.profile-heading { margin-bottom: var(--space-4); }
+.profile-eyebrow { color: var(--orange-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+.profile-layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: var(--space-3); align-items: start; }
+.profile-card { border: 1px solid var(--border); border-radius: 12px; background: var(--white); padding: var(--space-4); }
+.profile-overview { text-align: center; }
+.profile-avatar { width: 80px; height: 80px; margin: 0 auto 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #fff0e5; color: var(--orange-dark); font-weight: 800; font-size: 28px; }
+.profile-overview h2 { font-size: 21px; overflow-wrap: anywhere; }
+.profile-email { color: var(--muted); font-size: 13px; margin: 6px 0 12px; overflow-wrap: anywhere; }
+.profile-role { display: inline-block; padding: 4px 12px; background: var(--light-gray); border-radius: 20px; font-size: 12px; }
+.profile-links { display: flex; flex-direction: column; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); gap: 8px; }
+.profile-links a { display: flex; align-items: center; gap: 10px; text-align: left; padding: 12px 8px; border-radius: var(--radius); font-size: 14px; }
+.profile-links a:hover { background: var(--light-gray); color: var(--orange-dark); }
+.profile-links a > :last-child { margin-left: auto; }
+.profile-links a > i:first-child { color: var(--orange-dark); }
+.profile-links span { padding: 1px 7px; background: #fff0e5; border-radius: 20px; color: var(--orange-dark); font-size: 12px; }
+.profile-logout { width: 100%; text-align: left; display: flex; align-items: center; gap: 10px; padding: 16px 8px 0; margin-top: 16px; border: 0; border-top: 1px solid var(--border); background: transparent; color: #b42318; font-size: 14px; }
+.profile-section-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.profile-section-heading h2 { font-size: 21px; }
+.profile-section-heading p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.profile-section-icon { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0; border-radius: 10px; background: #fff0e5; color: var(--orange-dark); font-size: 23px; }
+#profile-fields { border: 0; min-width: 0; }
+#profile-fields label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
+#profile-fields input { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); background: var(--white); padding: 12px 14px; color: var(--text); margin-bottom: 20px; }
+#profile-fields input:focus { outline: 2px solid var(--orange); outline-offset: 1px; }
+#profile-fields input:disabled { background: var(--light-gray); }
+.profile-field-hint { font-size: 12px; color: var(--muted); margin-top: -12px; }
+.profile-form-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); }
+.profile-save, .profile-secondary { border-radius: var(--radius); padding: 11px 22px; font-weight: 600; font-size: 14px; }
+.profile-save { background: var(--orange); color: var(--white); border: 1px solid var(--orange); }
+.profile-save:hover { background: var(--orange-dark); }
+.profile-secondary { background: var(--white); color: var(--text); border: 1px solid var(--border); }
+.profile-secondary:hover { background: var(--light-gray); }
+.profile-save:disabled { opacity: .6; }
+.profile-message { background: var(--light-gray); border-radius: var(--radius); padding: 12px 16px; font-size: 14px; margin-bottom: 20px; }
+.profile-message.success { color: #21653b; background: #edf8f0; }
+.profile-message.error { color: #b42318; background: #fff0ee; }
+#profile-retry { margin-bottom: 20px; }
+@media (max-width: 800px) { .profile-layout { grid-template-columns: 1fr; } .profile-card { padding: 24px; } }
+@media (max-width: 400px) { .profile-card { padding: 20px; } .profile-section-heading h2 { font-size: 18px; } .profile-section-heading { align-items: flex-start; } }

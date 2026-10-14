@@ -58,3 +58,5 @@ body[data-page="games"] .product-card img { height: 290px; }
 .game-platforms { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
 .game-platforms:empty { display: none; }
 .game-platforms span { padding: 3px 6px; border-radius: 3px; background: var(--light-gray); color: var(--muted); font-size: 11px; }
+body[data-page="deals"] .product-discount { background: var(--orange); color: var(--white); font-weight: 700; }
+#category-options .filter-option { text-transform: capitalize; }

@@ -6,6 +6,13 @@ let filteredProducts = [];
 let catalogPage = 1;
 const productsPerPage = 6;
 
+function getDiscountPercentage(product) {
+  const price = Number(product.price);
+  const originalPrice = Number(product.originalPrice);
+  if (!Number.isFinite(price) || !Number.isFinite(originalPrice) || price < 0 || originalPrice <= price) return 0;
+  return (originalPrice - price) / originalPrice * 100;
+}
+
 function getProductOptions(product, field) {
   const value = field === "platform" ? (product.platforms || product.platform) : product[field];
   if (Array.isArray(value)) return value.map(String);
@@ -40,6 +47,7 @@ function createGameFilter(field) {
 function displayCatalogPage() {
   const start = (catalogPage - 1) * productsPerPage;
   displayProducts(filteredProducts.slice(start, start + productsPerPage));
+  if (document.body.dataset.page === "deals" && catalogProducts.length === 0) productsMessage.textContent = "No deals available right now.";
   document.getElementById("results-count").textContent = "Showing " + filteredProducts.length + " products";
   document.getElementById("page-range").textContent = filteredProducts.length
     ? "Showing " + (start + 1) + "–" + Math.min(start + productsPerPage, filteredProducts.length) + " of " + filteredProducts.length + " products"
@@ -81,6 +89,9 @@ function filterCatalog() {
   const genres = Array.from(catalogFilters.querySelectorAll('input[name="genre"]:checked')).map(function (input) { return input.value; });
   const platforms = Array.from(catalogFilters.querySelectorAll('input[name="platform"]:checked')).map(function (input) { return input.value; });
   const types = Array.from(catalogFilters.querySelectorAll('input[name="type"]:checked')).map(function (input) { return input.value; });
+  const categories = Array.from(catalogFilters.querySelectorAll('input[name="category"]:checked')).map(function (input) { return input.value; });
+  const discountInput = catalogFilters.querySelector('input[name="discount"]:checked');
+  const minimumDiscount = discountInput ? Number(discountInput.value) : 0;
   const query = (new URLSearchParams(location.search).get("q") || "").trim().toLowerCase();
   filteredProducts = catalogProducts.filter(function (product) {
     const stock = Number(product.stock) > 0 ? "in" : "out";
@@ -90,11 +101,14 @@ function filterCatalog() {
       (availability.length === 0 || availability.includes(stock)) &&
       (genres.length === 0 || genres.some(function (genre) { return getProductOptions(product, "genre").includes(genre); })) &&
       (platforms.length === 0 || platforms.some(function (platform) { return getProductOptions(product, "platform").includes(platform); })) &&
-      (types.length === 0 || types.some(function (type) { return getProductOptions(product, "type").includes(type); }));
+      (types.length === 0 || types.some(function (type) { return getProductOptions(product, "type").includes(type); })) &&
+      (categories.length === 0 || categories.includes(String(product.category))) &&
+      getDiscountPercentage(product) >= minimumDiscount;
   });
   if (catalogSort.value === "price-low") filteredProducts.sort(function (a, b) { return Number(a.price) - Number(b.price); });
   if (catalogSort.value === "price-high") filteredProducts.sort(function (a, b) { return Number(b.price) - Number(a.price); });
   if (catalogSort.value === "name") filteredProducts.sort(function (a, b) { return String(a.name).localeCompare(String(b.name)); });
+  if (catalogSort.value === "discount") filteredProducts.sort(function (a, b) { return getDiscountPercentage(b) - getDiscountPercentage(a); });
   catalogPage = 1;
   displayCatalogPage();
 }
@@ -105,10 +119,14 @@ async function loadCatalog() {
   productsMessage.textContent = "Loading products...";
   try {
     const products = await getProducts();
-    catalogProducts = products.filter(function (product) { return product.category === document.body.dataset.category; });
+    catalogProducts = products.filter(function (product) {
+      if (document.body.dataset.page === "deals") return getDiscountPercentage(product) > 0;
+      return product.category === document.body.dataset.category;
+    });
     createGameFilter("genre");
     createGameFilter("platform");
     createGameFilter("type");
+    createGameFilter("category");
     document.getElementById("catalog-count").textContent = catalogProducts.length;
     document.getElementById("in-stock-count").textContent = catalogProducts.filter(function (product) { return Number(product.stock) > 0; }).length;
     document.getElementById("out-stock-count").textContent = catalogProducts.filter(function (product) { return Number(product.stock) <= 0; }).length;

@@ -6,6 +6,7 @@
   <title>GameCore | My Account</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../style/layout.css">
+  <link rel="stylesheet" href="../style/profile.css">
 </head>
 <body data-page="profile">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -15,8 +16,36 @@
 
   <main class="container page-content" id="main-content">
     <div id="protected-content" hidden>
-      <h1>My Account</h1>
-      <p class="page-description">The profile page will be added after the login flow is ready.</p>
+      <div class="profile-heading"><p class="profile-eyebrow">YOUR GAMECORE ACCOUNT</p><h1>My Profile</h1><p class="page-description">Your details, your next adventure.</p></div>
+      <div class="profile-layout">
+        <aside class="profile-card profile-overview">
+          <div class="profile-avatar" id="profile-avatar" aria-hidden="true">GC</div>
+          <h2 id="profile-name">My Account</h2>
+          <p id="profile-email" class="profile-email"></p>
+          <span class="profile-role" id="profile-role">Customer</span>
+          <nav class="profile-links" aria-label="Account navigation">
+            <a href="../index.html"><i class="bi bi-shop" aria-hidden="true"></i> Browse store <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a href="cart.html"><i class="bi bi-cart3" aria-hidden="true"></i> My cart <span id="profile-cart-count">0</span></a>
+            <a href="admin/products.html" id="profile-admin" hidden><i class="bi bi-grid" aria-hidden="true"></i> Admin Panel <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+          </nav>
+          <button class="profile-logout" id="profile-logout" type="button"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sign out</button>
+        </aside>
+        <section class="profile-card profile-details" aria-labelledby="details-title">
+          <div class="profile-section-heading"><span class="profile-section-icon"><i class="bi bi-person" aria-hidden="true"></i></span><div><h2 id="details-title">Personal information</h2><p>Keep your account details up to date.</p></div></div>
+          <p id="profile-message" class="profile-message" role="status">Loading your account...</p>
+          <button type="button" id="profile-retry" class="profile-secondary" hidden>Try again</button>
+          <form id="profile-form">
+            <fieldset id="profile-fields" disabled>
+              <label for="profile-name-input">Full name</label>
+              <input id="profile-name-input" name="name" type="text" autocomplete="name" minlength="2" maxlength="80" required>
+              <label for="profile-email-input">Email address</label>
+              <input id="profile-email-input" name="email" type="email" autocomplete="email" maxlength="254" required>
+              <p class="profile-field-hint">Use this email to sign in to GameCore.</p>
+              <div class="profile-form-actions"><button class="profile-save" type="submit">Save changes</button><button class="profile-secondary" id="profile-cancel" type="button">Cancel</button></div>
+            </fieldset>
+          </form>
+        </section>
+      </div>
     </div>
   </main>
 
@@ -28,6 +57,7 @@
   <!-- auth.js first, shared layout second, page-specific JavaScript last. -->
   <script src="../js/auth.js"></script>
   <script src="../js/layout.js"></script>
+  <script src="../js/api.js"></script>
   <script src="../js/profile.js"></script>
 </body>
 </html>
