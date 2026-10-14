@@ -81,17 +81,26 @@ function displayProducts(products) {
 async function loadProducts() {
   try {
     const products = await getProducts();
-    const query = new URLSearchParams(window.location.search)
-  .get("q")?.trim().toLowerCase() || "";
 
-const matchingProducts = products.filter(function (product) {
-  return product.name.toLowerCase().includes(query) ||
-    product.category.toLowerCase().includes(query) ||
-    product.brand.toLowerCase().includes(query);
-});
+    const params = new URLSearchParams(window.location.search);
+    const query = (params.get("q") || "").trim().toLowerCase();
+    const category = document.body.dataset.category || "";
 
-displayProducts(matchingProducts);
+    const matchingProducts = products.filter(function (product) {
+      const matchesCategory =
+        category === "" || product.category === category;
+
+      const matchesSearch =
+        product.name.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query) ||
+        product.brand.toLowerCase().includes(query);
+
+      return matchesCategory && matchesSearch;
+    });
+
+    displayProducts(matchingProducts);
   } catch (error) {
+    productsMessage.hidden = false;
     productsMessage.textContent =
       "Products could not be loaded. Please try again.";
     console.error(error);
