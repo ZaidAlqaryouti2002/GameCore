@@ -40,7 +40,11 @@ function displayProducts(products) {
 
       <div class="product-info">
         <p class="product-category">${product.category}</p>
-        <h2>${product.name}</h2>
+        <h2>
+        <a href="${new URL("pages/product.html", PROJECT_URL).href}?id=${encodeURIComponent(product.id)}">
+        ${product.name}
+        </a>
+        </h2>
         <p class="product-brand">${product.brand}</p>
         <p class="product-price">$${Number(product.price).toFixed(2)}</p>
         <p class="product-stock">In stock: ${product.stock}</p>
