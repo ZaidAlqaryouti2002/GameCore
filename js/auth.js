@@ -1,6 +1,5 @@
-// Local account and session helpers. Load before layout.js.
+// Account and session helpers. Load before layout.js.
 const SESSION_KEY = "gamecore_user";
-const ACCOUNTS_KEY = "gamecore_accounts";
 const authScript = document.currentScript;
 const AUTH_PROJECT_URL = new URL("../", authScript.src);
 
@@ -101,15 +100,9 @@ function logout() {
   window.location.replace(new URL("index.html", AUTH_PROJECT_URL).href);
 }
 
-function getLocalAccounts() {
-  const accounts = JSON.parse(localStorage.getItem(ACCOUNTS_KEY)) || [];
-  return Array.isArray(accounts) ? accounts : [];
-}
-
-// Browser-only prototype: keep a salted digest instead of a plain password.
-// A backend must replace this local account store for real authentication.
-async function hashPassword(password, salt) {
-  const data = new TextEncoder().encode(salt + ":" + password);
+// Prototype only: real authentication must be handled by a backend.
+async function hashPassword(password) {
+  const data = new TextEncoder().encode(password);
   const result = await crypto.subtle.digest("SHA-256", data);
 
   return Array.from(new Uint8Array(result)).map(function (byte) {
@@ -117,41 +110,28 @@ async function hashPassword(password, salt) {
   }).join("");
 }
 
-async function registerLocalAccount(name, email, password) {
+async function registerAccount(name, email, password) {
   const normalizedEmail = email.trim().toLowerCase();
-  const salt = crypto.randomUUID();
-  const passwordHash = await hashPassword(password, salt);
-  const accounts = getLocalAccounts();
-
-  const existingAccount = accounts.find(function (account) {
-    return account.email === normalizedEmail;
-  });
+  const existingAccount = await findUserByEmail(normalizedEmail);
 
   if (existingAccount) {
     throw new Error("An account with this email already exists. Please sign in.");
   }
 
-  const account = {
-    id: crypto.randomUUID(),
+  const passwordHash = await hashPassword(password);
+
+  return createUser({
     name: name.trim(),
     email: normalizedEmail,
-    salt: salt,
     passwordHash: passwordHash,
     role: "customer"
-  };
-
-  accounts.push(account);
-  localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
-  return account;
+  });
 }
 
-async function signInLocalAccount(email, password) {
-  const normalizedEmail = email.trim().toLowerCase();
-  const account = getLocalAccounts().find(function (savedAccount) {
-    return savedAccount.email === normalizedEmail;
-  });
+async function signInAccount(email, password) {
+  const account = await findUserByEmail(email);
 
-  if (!account || await hashPassword(password, account.salt) !== account.passwordHash) {
+  if (!account || await hashPassword(password) !== account.passwordHash) {
     throw new Error("The email or password is incorrect.");
   }
 

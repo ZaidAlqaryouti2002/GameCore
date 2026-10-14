@@ -21,11 +21,23 @@ document.querySelectorAll(".password-toggle").forEach(function (button) {
 });
 
 function showFormError(message, field) {
+  formMessage.classList.remove("success");
   formMessage.textContent = message;
   formMessage.hidden = false;
 
   if (field) {
     field.focus();
+  }
+}
+
+if (!isRegistration) {
+  const message = sessionStorage.getItem("gamecore_auth_message");
+
+  if (message) {
+    formMessage.textContent = message;
+    formMessage.classList.add("success");
+    formMessage.hidden = false;
+    sessionStorage.removeItem("gamecore_auth_message");
   }
 }
 
@@ -71,11 +83,12 @@ accountForm.addEventListener("submit", async function (event) {
 
     if (isRegistration) {
       const name = document.getElementById("full-name").value;
-      user = await registerLocalAccount(name, emailInput.value, passwordInput.value);
+      await registerAccount(name, emailInput.value, passwordInput.value);
+      sessionStorage.setItem("gamecore_auth_message", "Account created. Please sign in.");
       window.location.href = new URL("pages/login.html", AUTH_PROJECT_URL).href;
       return;
     } else {
-      user = await signInLocalAccount(emailInput.value, passwordInput.value);
+      user = await signInAccount(emailInput.value, passwordInput.value);
       rememberUser = document.getElementById("remember-me").checked;
     }
 
@@ -85,10 +98,12 @@ accountForm.addEventListener("submit", async function (event) {
 
     window.location.href = new URL("index.html", AUTH_PROJECT_URL).href;
   } catch (error) {
-    if (error.name === "QuotaExceededError" || error.name === "SecurityError" || error instanceof SyntaxError) {
+    if (error.name === "QuotaExceededError" || error.name === "SecurityError") {
       showFormError("Account storage is unavailable. Please check your browser settings.");
+    } else if (error instanceof SyntaxError) {
+      showFormError("Could not read account data. Please try again.");
     } else if (error instanceof TypeError) {
-      showFormError("Could not complete your request. Please open the project using Live Server.");
+      showFormError("Could not connect. Please check your connection and use Live Server.");
     } else {
       showFormError(error.message);
     }

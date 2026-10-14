@@ -230,6 +230,12 @@
   font-size: 14px;
 }
 
+.auth-message.success {
+  border-color: #b7d7c0;
+  background-color: #f0f8f2;
+  color: #25613a;
+}
+
 @media (max-width: 1100px) {
   .auth-banner,
   .auth-panel {
