@@ -304,17 +304,17 @@ img {
   font-size: 13px;
 }
 
-/* Shared page area: content will be added in later stages. */
+/* Shared page area */
 .page-content {
   flex: 1;
-  padding-top: 42px;
-  padding-bottom: 50px;
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-5);
 }
 
 .page-content h1 {
   font-size: 32px;
   line-height: 1.2;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-2);
 }
 
 .page-description {
@@ -526,8 +526,8 @@ img {
   }
 
   .page-content {
-    padding-top: 30px;
-    padding-bottom: 36px;
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-4);
   }
 
   .page-content h1 {

@@ -9,4 +9,9 @@
   --white: #ffffff;
   --container-width: 1360px;
   --radius: 6px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
 }

@@ -84,8 +84,31 @@ function initializeMenu() {
   });
 }
 
-// Only display a saved cart count for now. The cart itself comes later.
-// Future cart format: [{ id: 1, quantity: 2 }].
+function getStoredCart() {
+  try {
+    const cart = JSON.parse(localStorage.getItem("gamecore_cart")) || [];
+
+    if (!Array.isArray(cart)) {
+      return [];
+    }
+
+    const validCart = cart.filter(function (item) {
+      return item && item.id !== undefined && item.id !== null &&
+        String(item.id).trim() !== "" &&
+        Number.isInteger(item.quantity) && item.quantity > 0;
+    });
+
+    // Old test entries had no product ID. Remove only those entries.
+    if (validCart.length !== cart.length) {
+      localStorage.setItem("gamecore_cart", JSON.stringify(validCart));
+    }
+
+    return validCart;
+  } catch (error) {
+    return [];
+  }
+}
+
 function updateCartCount() {
   const badge = document.getElementById("cart-count");
   const cartLink = document.getElementById("cart-link");
@@ -95,21 +118,9 @@ function updateCartCount() {
   }
 
   let count = 0;
-
-  try {
-    const cart = JSON.parse(localStorage.getItem("gamecore_cart")) || [];
-
-    if (Array.isArray(cart)) {
-      cart.forEach(function (item) {
-        if (item && Number.isInteger(item.quantity) && item.quantity > 0) {
-          count += item.quantity;
-        }
-      });
-    }
-  } catch (error) {
-    // A missing or invalid cart should not stop the shared layout.
-    count = 0;
-  }
+  getStoredCart().forEach(function (item) {
+    count += item.quantity;
+  });
 
   badge.textContent = count;
   cartLink.setAttribute("aria-label", "Shopping cart, " + count + (count === 1 ? " item" : " items"));
@@ -145,16 +156,26 @@ function initializeAccount() {
 
 function initializeSearch() {
   const searchForm = document.getElementById("search-form");
-  const message = document.getElementById("header-message");
+  const searchInput = document.getElementById("site-search");
 
-  if (!searchForm || !message) {
+  if (!searchForm || !searchInput) {
     return;
   }
 
+  const currentSearch = new URLSearchParams(window.location.search).get("q");
+  searchInput.value = currentSearch || "";
+
   searchForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    message.textContent = "Product search will be added when the catalog is ready.";
-    message.hidden = false;
+
+    const query = searchInput.value.trim();
+    const homeUrl = new URL("index.html", PROJECT_URL);
+
+    if (query) {
+      homeUrl.searchParams.set("q", query);
+    }
+
+    window.location.href = homeUrl.href;
   });
 }
 
