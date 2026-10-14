@@ -42,6 +42,7 @@ function displayCart() {
     shownItems += 1;
 
     const quantity = Number(item.quantity) || 1;
+    const stock = Number(product.stock);
     const itemTotal = Number(product.price) * quantity;
     total += itemTotal;
 
@@ -50,17 +51,84 @@ function displayCart() {
 
     row.innerHTML = `
       <img src="${product.image}" alt="${product.name}">
+
       <div class="cart-item-details">
         <h2>${product.name}</h2>
-        <p>Quantity: ${quantity}</p>
+
+        <div
+          class="quantity-controls"
+          role="group"
+          aria-label="Product quantity"
+        >
+          <button
+            class="quantity-minus"
+            type="button"
+            aria-label="Decrease quantity"
+          >
+            &minus;
+          </button>
+
+          <span class="quantity-value">${quantity}</span>
+
+          <button
+            class="quantity-plus"
+            type="button"
+            aria-label="Increase quantity"
+          >
+            +
+          </button>
+        </div>
+
         <p>$${itemTotal.toFixed(2)}</p>
-        <button class="cart-remove-button" type="button">Remove</button>
+
+        <button class="cart-remove-button" type="button">
+          Remove
+        </button>
       </div>
     `;
 
     cartItems.appendChild(row);
 
-    row.querySelector(".cart-remove-button").addEventListener("click", function () {
+    const minusButton = row.querySelector(".quantity-minus");
+    const plusButton = row.querySelector(".quantity-plus");
+    const removeButton = row.querySelector(".cart-remove-button");
+
+    minusButton.disabled = quantity <= 1;
+    plusButton.disabled = quantity >= stock;
+
+    function changeQuantity(amount) {
+      const savedCart = getStoredCart();
+
+      const cartItem = savedCart.find(function (savedItem) {
+        return String(savedItem.id) === String(product.id);
+      });
+
+      if (!cartItem) {
+        return;
+      }
+
+      const newQuantity = Number(cartItem.quantity) + amount;
+
+      if (newQuantity < 1 || newQuantity > stock) {
+        return;
+      }
+
+      cartItem.quantity = newQuantity;
+
+      localStorage.setItem("gamecore_cart", JSON.stringify(savedCart));
+      displayCart();
+      updateCartCount();
+    }
+
+    minusButton.addEventListener("click", function () {
+      changeQuantity(-1);
+    });
+
+    plusButton.addEventListener("click", function () {
+      changeQuantity(1);
+    });
+
+    removeButton.addEventListener("click", function () {
       removeFromCart(product.id);
     });
   });
@@ -86,7 +154,9 @@ async function loadCart() {
     allProducts = await getProducts();
     displayCart();
   } catch (error) {
-    cartMessage.textContent = "Could not load your cart. Please try again.";
+    cartMessage.hidden = false;
+    cartMessage.textContent =
+      "Could not load your cart. Please try again.";
     console.error(error);
   }
 }

@@ -23,6 +23,7 @@ function addToCart(productId) {
 
 function displayProducts(products) {
   productsGrid.innerHTML = "";
+  productsMessage.hidden = false;
 
   if (products.length === 0) {
     productsMessage.textContent = "No products found.";
@@ -35,15 +36,16 @@ function displayProducts(products) {
     const productCard = document.createElement("article");
     productCard.classList.add("product-card");
 
+    const productUrl = new URL("pages/product.html", PROJECT_URL);
+    productUrl.searchParams.set("id", product.id);
+
     productCard.innerHTML = `
       <img src="${product.image}" alt="${product.name}">
 
       <div class="product-info">
         <p class="product-category">${product.category}</p>
         <h2>
-        <a href="${new URL("pages/product.html", PROJECT_URL).href}?id=${encodeURIComponent(product.id)}">
-        ${product.name}
-        </a>
+          <a href="${productUrl.href}">${product.name}</a>
         </h2>
         <p class="product-brand">${product.brand}</p>
         <p class="product-price">$${Number(product.price).toFixed(2)}</p>
@@ -59,26 +61,57 @@ function displayProducts(products) {
 
     const addButton = productCard.querySelector(".add-to-cart-button");
 
-    if (product.id === undefined || product.id === null || String(product.id).trim() === "") {
+    if (
+      product.id === undefined ||
+      product.id === null ||
+      String(product.id).trim() === ""
+    ) {
       addButton.textContent = "Unavailable";
       addButton.disabled = true;
       return;
     }
 
-    const isInCart = getStoredCart().some(function (item) {
-      return String(item.id) === String(product.id);
-    });
+    function updateButton() {
+      const isInCart = getStoredCart().some(function (item) {
+        return String(item.id) === String(product.id);
+      });
 
-    if (isInCart) {
-      addButton.textContent = "In Cart";
-      addButton.disabled = true;
+      addButton.classList.toggle("remove-from-cart", isInCart);
+
+      if (isInCart) {
+        addButton.textContent = "Remove from Cart";
+        addButton.disabled = false;
+      } else if (Number(product.stock) <= 0) {
+        addButton.textContent = "Out of Stock";
+        addButton.disabled = true;
+      } else {
+        addButton.textContent = "Add to Cart";
+        addButton.disabled = false;
+      }
     }
 
     addButton.addEventListener("click", function () {
-      addToCart(product.id);
-      addButton.textContent = "In Cart";
-      addButton.disabled = true;
+      const cart = getStoredCart();
+
+      const isInCart = cart.some(function (item) {
+        return String(item.id) === String(product.id);
+      });
+
+      if (isInCart) {
+        const updatedCart = cart.filter(function (item) {
+          return String(item.id) !== String(product.id);
+        });
+
+        localStorage.setItem("gamecore_cart", JSON.stringify(updatedCart));
+        updateCartCount();
+      } else {
+        addToCart(product.id);
+      }
+
+      updateButton();
     });
+
+    updateButton();
   });
 }
 
