@@ -5,6 +5,16 @@ const PROJECT_URL = new URL("../", layoutScript.src);
 const TOPBAR_URL = new URL("components/topbar.html", PROJECT_URL);
 const FOOTER_URL = new URL("components/footer.html", PROJECT_URL);
 
+// Display product content as text when inserting it into an HTML template.
+function escapeHTML(value) {
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // Load one HTML component.
 async function fetchComponent(url) {
   const response = await fetch(url);
@@ -142,6 +152,11 @@ function initializeAccount() {
   }
 
   const user = getCurrentUser();
+  const adminLink = document.getElementById("admin-link");
+
+  if (adminLink) {
+    adminLink.hidden = !user || user.role !== "admin";
+  }
 
   if (user) {
     accountText.textContent = user.name.split(" ")[0];

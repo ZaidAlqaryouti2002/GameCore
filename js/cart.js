@@ -50,10 +50,10 @@ function displayCart() {
     row.classList.add("cart-item");
 
     row.innerHTML = `
-      <img src="${product.image}" alt="${product.name}">
+      <img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}">
 
       <div class="cart-item-details">
-        <h2>${product.name}</h2>
+        <h2>${escapeHTML(product.name)}</h2>
 
         <div
           class="quantity-controls"
@@ -109,7 +109,7 @@ function displayCart() {
 
       const newQuantity = Number(cartItem.quantity) + amount;
 
-      if (newQuantity < 1 || newQuantity > stock) {
+      if (newQuantity < 1 || (amount > 0 && newQuantity > stock)) {
         return;
       }
 
@@ -152,6 +152,16 @@ async function loadCart() {
 
   try {
     allProducts = await getProducts();
+    const cart = getStoredCart();
+    const availableCart = cart.filter(function (item) {
+      return allProducts.some(function (product) {
+        return String(product.id) === String(item.id);
+      });
+    });
+    if (availableCart.length !== cart.length) {
+      localStorage.setItem("gamecore_cart", JSON.stringify(availableCart));
+      updateCartCount();
+    }
     displayCart();
   } catch (error) {
     cartMessage.hidden = false;

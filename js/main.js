@@ -40,16 +40,16 @@ function displayProducts(products) {
     productUrl.searchParams.set("id", product.id);
 
     productCard.innerHTML = `
-      <img src="${product.image}" alt="${product.name}">
+      <img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}">
 
       <div class="product-info">
-        <p class="product-category">${product.category}</p>
+        <p class="product-category">${escapeHTML(product.category)}</p>
         <h2>
-          <a href="${productUrl.href}">${product.name}</a>
+          <a href="${productUrl.href}">${escapeHTML(product.name)}</a>
         </h2>
-        <p class="product-brand">${product.brand}</p>
+        <p class="product-brand">${escapeHTML(product.brand)}</p>
         <p class="product-price">$${Number(product.price).toFixed(2)}</p>
-        <p class="product-stock">In stock: ${product.stock}</p>
+        <p class="product-stock">In stock: ${Number(product.stock)}</p>
 
         <button class="add-to-cart-button" type="button">
           Add to Cart

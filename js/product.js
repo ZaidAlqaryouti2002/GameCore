@@ -25,15 +25,15 @@ async function loadProduct() {
     document.title = product.name + " | GameCore";
 
     productDetails.innerHTML = `
-      <img src="${product.image}" alt="${product.name}">
+      <img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}">
 
       <div class="product-description">
-        <p>${product.category}</p>
-        <h1>${product.name}</h1>
-        <p>${product.brand}</p>
-        <p>${product.description}</p>
+        <p>${escapeHTML(product.category)}</p>
+        <h1>${escapeHTML(product.name)}</h1>
+        <p>${escapeHTML(product.brand)}</p>
+        <p class="product-long-description">${escapeHTML(product.description)}</p>
         <p class="details-price">$${Number(product.price).toFixed(2)}</p>
-        <p>In stock: ${product.stock}</p>
+        <p>In stock: ${Number(product.stock)}</p>
         <button id="product-add-button" type="button">Add to Cart</button>
       </div>
     `;

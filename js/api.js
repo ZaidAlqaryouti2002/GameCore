@@ -16,6 +16,44 @@ async function getProducts() {
   return products;
 }
 
+async function createProduct(product) {
+  const response = await fetch(PRODUCTS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(product)
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not add the product. Please try again.");
+  }
+
+  return response.json();
+}
+
+async function updateProduct(id, product) {
+  const response = await fetch(PRODUCTS_URL + "/" + encodeURIComponent(id), {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(product)
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not update the product. Please try again.");
+  }
+
+  return response.json();
+}
+
+async function deleteProduct(id) {
+  const response = await fetch(PRODUCTS_URL + "/" + encodeURIComponent(id), {
+    method: "DELETE"
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not delete the product. Please try again.");
+  }
+}
+
 async function getUsers() {
   const response = await fetch(USERS_URL);
 

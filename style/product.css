@@ -36,6 +36,11 @@
   color: var(--muted);
 }
 
+.product-long-description {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
 .product-description p:first-child {
   color: var(--orange-dark);
   font-size: 12px;

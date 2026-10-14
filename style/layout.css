@@ -1,5 +1,5 @@
 /* Bootstrap Icons: font icons only, shared by every page. */
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css");
+@import url("../assets/vendor/bootstrap-icons/bootstrap-icons.min.css");
 @import url("./main_variables.css");
 
 /* Shared base styles */

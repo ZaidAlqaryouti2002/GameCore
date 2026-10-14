@@ -3,31 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GameCore | Admin Panel</title>
+  <title>GameCore | Product Management</title>
   <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../../style/layout.css">
+  <link rel="stylesheet" href="../../style/admin.css">
 </head>
 <body data-page="admin">
-  <a class="skip-link" href="#main-content">Skip to content</a>
-
-  <!-- Loaded from components/topbar.html by layout.js -->
+  <a class="skip-link" href="#main-content">Skip to products</a>
   <div id="topbar-container"></div>
 
   <main class="container page-content" id="main-content">
     <div id="protected-content" hidden>
-      <h1>Admin Panel</h1>
-      <p class="page-description">This is only a protected page skeleton. The admin layout and product management will be added later.</p>
+      <header class="admin-heading">
+        <div>
+          <p class="admin-eyebrow">Administration</p>
+          <h1>Products</h1>
+          <p class="page-description">Manage your GameCore catalog.</p>
+        </div>
+        <button class="admin-primary" id="new-product-button" type="button">
+          <i class="bi bi-plus-lg" aria-hidden="true"></i> Add Product
+        </button>
+      </header>
+
+      <p class="admin-message" id="admin-message" role="status" hidden></p>
+
+      <section class="product-editor" id="product-editor" aria-labelledby="editor-title" hidden>
+        <header class="editor-heading">
+          <h2 id="editor-title">Add Product</h2>
+          <button class="admin-icon-button" id="close-editor-button" type="button"
+            title="Close editor" aria-label="Close product editor">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+          </button>
+        </header>
+        <form id="product-form">
+          <div class="admin-field">
+            <label for="product-name">Product name</label>
+            <input id="product-name" name="name" type="text" maxlength="120" required>
+          </div>
+          <div class="admin-field">
+            <label for="product-brand">Brand</label>
+            <input id="product-brand" name="brand" type="text" maxlength="80" required>
+          </div>
+          <div class="admin-field">
+            <label for="product-category">Category</label>
+            <select id="product-category" name="category" required>
+              <option value="">Select a category</option>
+              <option value="consoles">Consoles</option>
+              <option value="games">Games</option>
+              <option value="accessories">Accessories</option>
+            </select>
+          </div>
+          <div class="admin-number-fields">
+            <div class="admin-field">
+              <label for="product-price">Price ($)</label>
+              <input id="product-price" name="price" type="number" min="0" step="0.01" required>
+            </div>
+            <div class="admin-field">
+              <label for="product-stock">Stock</label>
+              <input id="product-stock" name="stock" type="number" min="0" step="1" required>
+            </div>
+          </div>
+          <div class="admin-field admin-full-width">
+            <label for="product-image">Image URL</label>
+            <input id="product-image" name="image" type="url" maxlength="2048" placeholder="https://" required>
+          </div>
+          <div class="admin-field admin-full-width">
+            <div class="description-heading">
+              <label for="product-description">Description</label>
+              <span class="ai-control" id="ai-control" tabindex="0" title="Description generation is currently unavailable.">
+                <button class="admin-secondary" id="generate-description-button" type="button" disabled>
+                  <i class="bi bi-stars" aria-hidden="true"></i> Generate Description
+                </button>
+                <span class="ai-availability" id="ai-availability">Currently unavailable</span>
+              </span>
+            </div>
+            <textarea id="product-description" name="description" rows="5" maxlength="3000" required></textarea>
+          </div>
+          <section class="ai-draft admin-full-width" id="ai-draft" aria-labelledby="draft-title" hidden>
+            <h3 id="draft-title">Description draft</h3>
+            <p id="draft-text"></p>
+            <div class="editor-actions">
+              <button class="admin-secondary" id="use-draft-button" type="button">Use Description</button>
+              <button class="admin-text-button" id="discard-draft-button" type="button">Discard</button>
+            </div>
+          </section>
+          <p class="admin-message admin-full-width" id="editor-message" role="status" hidden></p>
+          <div class="editor-actions admin-full-width">
+            <button class="admin-primary" id="save-product-button" type="submit">Add Product</button>
+            <button class="admin-secondary" id="cancel-edit-button" type="button">Cancel</button>
+          </div>
+        </form>
+      </section>
+
+      <section aria-label="Product catalog">
+        <div class="admin-toolbar">
+          <div class="admin-field admin-search">
+            <label for="admin-search">Search products</label>
+            <input id="admin-search" type="search" placeholder="Search by name or brand">
+          </div>
+          <div class="admin-field">
+            <label for="category-filter">Category</label>
+            <select id="category-filter">
+              <option value="">All categories</option>
+              <option value="consoles">Consoles</option>
+              <option value="games">Games</option>
+              <option value="accessories">Accessories</option>
+            </select>
+          </div>
+          <button class="admin-icon-button" id="reload-products-button" type="button" title="Reload products" aria-label="Reload products">
+            <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <p class="catalog-status" id="catalog-status" role="status">Loading products...</p>
+        <div class="admin-table-wrapper" tabindex="0" role="region" aria-label="Products table">
+          <table class="admin-table">
+            <caption class="sr-only">GameCore products</caption>
+            <thead>
+              <tr><th scope="col">Product</th><th scope="col">Category</th><th scope="col">Price</th><th scope="col">Stock</th><th scope="col">Actions</th></tr>
+            </thead>
+            <tbody id="admin-products"></tbody>
+          </table>
+        </div>
+      </section>
     </div>
   </main>
 
-  <!-- Remove this container on pages that should not have a footer. -->
   <div id="footer-container"></div>
-
-  <noscript><p class="container">Enable JavaScript to load the shared header and footer.</p></noscript>
-
-  <!-- auth.js first, shared layout second, page-specific JavaScript last. -->
+  <noscript><p class="container">Enable JavaScript to manage products.</p></noscript>
   <script src="../../js/auth.js"></script>
   <script src="../../js/layout.js"></script>
+  <script src="../../js/api.js"></script>
+  <script src="../../js/ai.js"></script>
   <script src="../../js/admin.js"></script>
 </body>
 </html>
