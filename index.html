@@ -3,41 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GameCore | Home</title>
+  <title>GameCore | Consoles, Games &amp; Accessories</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style/layout.css">
   <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="style/home.css">
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main-content">Skip to content</a>
-
-  <!-- Loaded from components/topbar.html by layout.js -->
   <div id="topbar-container"></div>
 
-  <main class="page-content" id="main-content">
-  <section class="products-section">
+  <main class="page-content home-content" id="main-content">
     <div class="container">
-      <div class="section-heading">
-        <h1>Featured Products</h1>
-        <p>Explore consoles, games and gaming accessories.</p>
-      </div>
+      <section class="home-hero" id="home-hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="hero-eyebrow">Next-level gaming starts here</p>
+          <h1 id="hero-title">Your Ultimate<br>Gaming Store</h1>
+          <p>The latest consoles, must-have accessories and your next favorite game. Everything you need to play your way.</p>
+          <a class="home-primary" href="#featured-products">Shop Now <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        </div>
+      </section>
 
-      <p id="products-message">Loading products...</p>
+      <section class="home-section" id="featured-products" aria-labelledby="featured-title">
+        <header class="home-section-heading">
+          <div>
+            <h2 id="featured-title">Featured right now</h2>
+            <p class="home-results-count" id="home-results-count" role="status"></p>
+          </div>
+          <a class="home-view-all" id="featured-view-all" href="index.html?view=all">View all <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        </header>
+        <p id="products-message" role="status">Loading products...</p>
+        <button class="home-retry" id="home-retry" type="button" hidden>Try Again</button>
+        <div class="products-grid" id="products-grid"></div>
+      </section>
 
-      <div class="products-grid" id="products-grid"></div>
+      <section class="home-section" id="home-collections" aria-label="More products" hidden>
+        <header class="home-section-heading">
+          <div class="home-tabs" role="tablist" aria-label="Product collections">
+            <button id="deals-tab" type="button" role="tab" aria-selected="false" aria-controls="collection-panel" tabindex="-1">Top Deals</button>
+            <button id="arrivals-tab" type="button" role="tab" aria-selected="true" aria-controls="collection-panel">New Arrivals</button>
+          </div>
+          <a class="home-view-all" id="collection-view-all" href="index.html?view=all&amp;sort=newest">View all <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        </header>
+        <div id="collection-panel" role="tabpanel" aria-labelledby="arrivals-tab">
+          <p class="collection-message" id="collection-message" role="status" hidden></p>
+          <div class="products-grid" id="collection-grid"></div>
+        </div>
+      </section>
     </div>
-  </section>
-</main>
 
-  <!-- Remove this container on pages that should not have a footer. -->
+    <section class="home-services" aria-label="Explore GameCore">
+      <div class="container services-grid">
+        <div class="home-service">
+          <i class="bi bi-controller" aria-hidden="true"></i>
+          <div><h2>All things gaming</h2><p>Consoles, games and gear in one place.</p></div>
+        </div>
+        <div class="home-service">
+          <i class="bi bi-bag-check" aria-hidden="true"></i>
+          <div><h2>Your cart, your way</h2><p>Keep your picks together, ready when you are.</p></div>
+        </div>
+        <a class="home-service" href="pages/support.html#contact">
+          <i class="bi bi-headset" aria-hidden="true"></i>
+          <div><h2>Here to help</h2><p>Find answers on our support page.</p></div>
+        </a>
+      </div>
+    </section>
+  </main>
+
   <div id="footer-container"></div>
-
-  <noscript><p class="container">Enable JavaScript to load the shared header and footer.</p></noscript>
-
-  <!-- auth.js first, shared layout second, page-specific JavaScript last. -->
+  <noscript><p class="container">Enable JavaScript to browse products.</p></noscript>
   <script src="js/auth.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/api.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>

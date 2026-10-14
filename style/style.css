@@ -66,6 +66,21 @@
   line-height: 1.3;
 }
 
+.product-image-link {
+  position: relative;
+  display: block;
+}
+
+.product-image-unavailable {
+  min-height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .product-brand {
   margin-bottom: 14px;
   color: var(--muted);
