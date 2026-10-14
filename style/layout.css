@@ -622,3 +622,21 @@ h6 {
 .about-hero h1 {
   font-weight: 800;
 }
+
+input:not([type="checkbox"]):not([type="radio"]):focus,
+select:focus,
+textarea:focus {
+  border-color: var(--orange);
+  outline: none;
+  box-shadow: none;
+}
+
+.search-form:focus-within {
+  border-color: var(--orange);
+}
+
+.search-form input:focus {
+  border: 0;
+  outline: none;
+  box-shadow: none;
+}
