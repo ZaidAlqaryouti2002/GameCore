@@ -110,3 +110,20 @@
   text-align: center;
   font-weight: 600;
 }
+
+.cart-item-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-details h2 {
+  overflow-wrap: anywhere;
+}
+
+.cart-item img {
+  flex-shrink: 0;
+}
+
+.quantity-controls {
+  gap: var(--space-1);
+}

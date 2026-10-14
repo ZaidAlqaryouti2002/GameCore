@@ -550,3 +550,56 @@ img {
     flex-wrap: wrap;
   }
 }
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.page-content h1 {
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+.page-description {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .page-content h1 {
+    font-size: 28px;
+  }
+}
+
+.home-primary,
+.home-retry,
+.apply-filters,
+.profile-save,
+.about-button,
+.admin-button,
+.add-to-cart-button,
+#product-add-button {
+  min-height: 44px;
+  background-color: var(--orange-action);
+  color: var(--white);
+}
+
+.quantity-controls button,
+.cart-remove-button,
+.reset-filters {
+  min-height: 44px;
+}
+
+.quantity-controls button {
+  min-width: 44px;
+}
+
+button:focus-visible,
+a:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--orange-action);
+  outline-offset: 3px;
+}

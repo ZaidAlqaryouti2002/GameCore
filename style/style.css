@@ -140,3 +140,40 @@
     height: 230px;
   }
 }
+
+
+.product-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-card);
+}
+
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2);
+}
+
+.product-info h2,
+.home-content .product-info h3 {
+  min-height: 2.7em;
+  font-size: 17px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.product-purchase-info {
+  margin-top: auto;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.product-info a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

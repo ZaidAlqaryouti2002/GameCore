@@ -301,3 +301,14 @@
     margin-bottom: var(--space-4);
   }
 }
+
+@media (max-width: 650px) {
+  .home-section-heading {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .home-tabs {
+    flex-wrap: wrap;
+  }
+}
