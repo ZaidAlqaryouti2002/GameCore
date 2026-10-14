@@ -6,17 +6,26 @@
   <title>GameCore | Consoles</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../style/layout.css">
+  <link rel="stylesheet" href="../style/style.css">
 </head>
-<body data-page="consoles">
+<body data-page="consoles" data-category="consoles">
   <a class="skip-link" href="#main-content">Skip to content</a>
 
   <!-- Loaded from components/topbar.html by layout.js -->
   <div id="topbar-container"></div>
 
-  <main class="container page-content" id="main-content">
-    <h1>Consoles</h1>
-    <p class="page-description">Console products and filters will be added in a later step.</p>
-  </main>
+  <main class="page-content" id="main-content">
+  <section class="products-section">
+    <div class="container">
+      <div class="section-heading">
+        <h1>Consoles</h1>
+      </div>
+
+      <p id="products-message" role="status">Loading products...</p>
+      <div class="products-grid" id="products-grid"></div>
+    </div>
+  </section>
+</main>
 
   <!-- Remove this container on pages that should not have a footer. -->
   <div id="footer-container"></div>
@@ -26,5 +35,7 @@
   <!-- auth.js first, shared layout second, page-specific JavaScript last. -->
   <script src="../js/auth.js"></script>
   <script src="../js/layout.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/main.js"></script>
 </body>
 </html>
