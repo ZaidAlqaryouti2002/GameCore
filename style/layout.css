@@ -244,7 +244,7 @@ img {
   padding: 0;
   border: 0;
   background-color: transparent;
-  color: var(--muted);
+  color: var(--text);
   font-size: 12px;
 }
 
@@ -590,7 +590,7 @@ textarea {
 .add-to-cart-button,
 #product-add-button {
   min-height: 44px;
-  background-color: var(--orange-action);
+  background-color: var(--orange);
   color: var(--white);
 }
 
